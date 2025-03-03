@@ -214,7 +214,7 @@ python main.py
 View the Submission: The predictions will be saved to submission.csv, ready for upload or further review.
 
 ## Accuracy
-The accuracy score is 76%
+The accuracy score is 76%.
 
 ## Further Improvements
 Hyperparameter Tuning: Experiment with different parameters for the logistic regression model to potentially increase accuracy.
