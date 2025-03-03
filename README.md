@@ -17,7 +17,6 @@ This repository presents a predictive model built to forecast Titanic passenger 
   - [Logistic Regression](#logistic-regression)
 - [Generating Submission](#generating-submission)
 - [Accuracy](#accuracy)
-- [Further Improvements](#further-improvements)
 - [Acknowledgments](#acknowledgments)
 
 ---
@@ -191,31 +190,6 @@ final.to_csv("submission.csv", index=False)
 ```
 ## Accuracy
 The accuracy score is 76%.
-
-## Further Improvements
-Hyperparameter Tuning: Experiment with different parameters for the logistic regression model to potentially increase accuracy.
-
-Feature Engineering: Explore additional features or transformations (such as combining SibSp and Parch) that could provide deeper insights.
-
-Advanced Models: Consider using ensemble methods or more complex classification models.
-
-Cross-Validation: Implement a cross-validation procedure to better assess model performance and reduce overfitting.
-
-An interesting idea is to visualize the data flow using an ASCII diagram:
-
-```
-[Data Loading] --> [Exploratory Analysis] --> [Missing Value Imputation]
-        |                                               |
-        v                                               v
-[Feature Engineering] ------------------> [Visualization (KDE Plots)]
-        |
-        v
-[Model Training (Logistic Regression)]
-        |
-        v
-[Prediction Generation] --> [Submission File]
-```
-This pipeline ensures a robust approach to handling missing data and evaluates the imputation's impact before modeling.
 
 ## Acknowledgments
 Thanks to the contributors of the Titanic dataset.
