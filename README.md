@@ -131,3 +131,113 @@ Additional steps include:
 • Filling in missing values in the Embarked column using the mode.
 
 • Dropping columns that are either irrelevant or contain too many missing entries (like Cabin).
+
+### Feature Engineering
+Convert the Sex categorical value into a numeric indicator:
+
+```python
+new_data = {'male': 0, 'female': 1}
+df["Sex_Number"] = df["Sex"].map(new_data)
+```
+Once the appropriate imputation is applied, update the dataset and drop intermediate columns:
+
+```python
+df.loc[:, ["Pclass", "Age", "Sex_Number", "SibSp", "Parch", "Fare"]] = df_knn
+df.fillna(df["Embarked"].mode()[0], inplace=True)
+df = df.drop(columns=['Cabin', 'Sex_Number'
+```
+
+## Modeling
+### Logistic Regression
+
+The model is built using scikit-learn’s LogisticRegression:
+
+#### Data Splitting and Encoding:
+
+Drop non-essential features (like PassengerId, Name, Ticket) and convert categorical variables using one-hot encoding:
+
+```python
+import pandas as pd
+x = df.drop(columns=['PassengerId', 'Survived', 'Name', 'Ticket'])
+x = pd.get_dummies(x)
+y = df['Survived']
+```
+####Model Training:
+
+The logistic regression model with an increased maximum iteration limit is fitted on the training data:
+
+```python
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression(max_iter=1000)
+lr.fit(x, y)
+```
+#### Prediction on Test Data:
+
+Preprocess the test data similarly and generate predictions:
+
+```python
+df_test_x = df_test.drop(columns=['PassengerId', 'Name', 'Ticket'])
+df_test_x = pd.get_dummies(df_test_x)
+predictions = lr.predict(df_test_x)
+```
+
+## Generating Submission
+The predicted survival outcomes are combined with the corresponding Passenger IDs and written to a CSV file:
+
+```python
+pred = pd.DataFrame(predictions, columns=['Survived'])
+final = pd.concat([df_test['PassengerId'], pred], axis=1)
+final.to_csv("submission.csv", index=False)
+```
+## Usage Guide
+
+### Clone the Repository:
+
+```bash
+git clone https://github.com/yourusername/titanic-survival-prediction.git
+cd titanic-survival-prediction
+```
+### Install Dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Place the Data Files: Ensure that train.csv and test.csv are located in the project root directory.
+
+Run the Pipeline: Execute the main Python script:
+
+```bash
+python main.py
+View the Submission: The predictions will be saved to submission.csv, ready for upload or further review.
+```
+
+## Further Improvements
+Hyperparameter Tuning: Experiment with different parameters for the logistic regression model to potentially increase accuracy.
+
+Feature Engineering: Explore additional features or transformations (such as combining SibSp and Parch) that could provide deeper insights.
+
+Advanced Models: Consider using ensemble methods or more complex classification models.
+
+Cross-Validation: Implement a cross-validation procedure to better assess model performance and reduce overfitting.
+
+An interesting idea is to visualize the data flow using an ASCII diagram:
+
+```
+[Data Loading] --> [Exploratory Analysis] --> [Missing Value Imputation]
+        |                                               |
+        v                                               v
+[Feature Engineering] ------------------> [Visualization (KDE Plots)]
+        |
+        v
+[Model Training (Logistic Regression)]
+        |
+        v
+[Prediction Generation] --> [Submission File]
+```
+This pipeline ensures a robust approach to handling missing data and evaluates the imputation's impact before modeling.
+
+## Acknowledgments
+Thanks to the contributors of the Titanic dataset.
+
+The project is powered by open-source libraries and tools, including Pandas, NumPy, Seaborn, Matplotlib, and Scikit-learn.
