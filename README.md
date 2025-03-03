@@ -143,7 +143,7 @@ Once the appropriate imputation is applied, update the dataset and drop intermed
 ```python
 df.loc[:, ["Pclass", "Age", "Sex_Number", "SibSp", "Parch", "Fare"]] = df_knn
 df.fillna(df["Embarked"].mode()[0], inplace=True)
-df = df.drop(columns=['Cabin', 'Sex_Number'
+df = df.drop(columns=['Cabin', 'Sex_Number'])
 ```
 
 ## Modeling
