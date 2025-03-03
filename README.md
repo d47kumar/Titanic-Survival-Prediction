@@ -17,6 +17,7 @@ This repository presents a predictive model built to forecast Titanic passenger 
   - [Logistic Regression](#logistic-regression)
 - [Generating Submission](#generating-submission)
 - [Usage Guide](#usage-guide)
+- [Accuracy](#accuracy)
 - [Further Improvements](#further-improvements)
 - [Acknowledgments](#acknowledgments)
 
@@ -194,7 +195,7 @@ final.to_csv("submission.csv", index=False)
 ### Clone the Repository:
 
 ```bash
-git clone https://github.com/yourusername/titanic-survival-prediction.git
+git clone https://github.com/d47kumar/titanic-survival-prediction.git
 cd titanic-survival-prediction
 ```
 ### Install Dependencies:
@@ -209,8 +210,11 @@ Run the Pipeline: Execute the main Python script:
 
 ```bash
 python main.py
-View the Submission: The predictions will be saved to submission.csv, ready for upload or further review.
 ```
+View the Submission: The predictions will be saved to submission.csv, ready for upload or further review.
+
+## Accuracy
+The accuracy score is 76%
 
 ## Further Improvements
 Hyperparameter Tuning: Experiment with different parameters for the logistic regression model to potentially increase accuracy.
