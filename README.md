@@ -63,23 +63,71 @@ Install them via pip:
 
 ```bash
 pip install numpy pandas seaborn matplotlib scikit-learn
+```
 
-## Modeling
+## Data Preparation
 
-### Logistic Regression
+### Exploratory Data Analysis
 
-After cleaning and preprocessing the data, we fit a logistic regression model to predict passenger survival.
-
-#### Data Preparation
-
-We first separate the target variable and drop unnecessary columns. Then, we apply one-hot encoding to handle categorical features:
+Before any modifications, the dataset is loaded and inspected using:
 
 ```python
-# Prepare training features and target
-y_train = pd.DataFrame(df['Survived'])
-df_x = df.drop(columns=['PassengerId', 'Survived', 'Name', 'Ticket'])
-df_test_x = df_test.drop(columns=['PassengerId', 'Name', 'Ticket'])
+import pandas as pd
+df = pd.read_csv("train.csv")
+print(df.shape)
+print(df.info())
+print(df.isnull().sum())
+```
 
-# Convert categorical variables using one-hot encoding
-x_train = pd.get_dummies(df_x)
-x_test = pd.get_dummies(df_test_x)
+This helps identify missing values (notably in the Age, Cabin, and Embarked fields).
+
+### Handling Missing Values
+
+Two distinct imputation strategies are explored on the Age feature:
+
+#### MICE Imputation
+The code selects a core group of features and uses the Iterative Imputer:
+```python
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+imputer = IterativeImputer(random_state=100, max_iter=10)
+df_train_mice = df.loc[:, ["Pclass", "Age", "Sex_Number", "SibSp", "Parch", "Fare"]]
+imputer.fit(df_train_mice)
+df_imputed_mice = imputer.transform(df_train_mice)
+df_mice = pd.DataFrame(df_imputed_mice, columns=["Pclass", "Age", "Sex_Number", "SibSp", "Parch", "Fare"])
+```
+
+#### KNN Imputation
+Using KNN with 2 neighbors for comparison:
+```python
+from sklearn.impute import KNNImputer
+imputer = KNNImputer(n_neighbors=2)
+df_train_knn = df.loc[:, ["Pclass", "Age", "Sex_Number", "SibSp", "Parch", "Fare"]]
+df_imputed_knn = imputer.fit_transform(df_train_knn)
+df_knn = pd.DataFrame(df_imputed_knn, columns=["Pclass", "Age", "Sex_Number", "SibSp", "Parch", "Fare"])
+```
+
+#### Visualization Comparison
+The density distribution of the original Age, MICE-imputed Age, and KNN-imputed Age are overlaid using seaborn:
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(12, 6))
+sns.kdeplot(data=df["Age"], color='crimson', ax=ax, fill=True)
+sns.kdeplot(data=df_mice["Age"], color='limegreen', ax=ax, fill=True)
+sns.kdeplot(data=df_knn["Age"], color='blue', ax=ax, fill=True)
+plt.xlabel('Age')
+plt.ylabel('Density')
+plt.show()
+```
+
+After visual comparison, the KNN imputation is chosen to replace the original Age values.
+
+Additional steps include:
+
+• Mapping the Sex column to a numerical representation.
+
+• Filling in missing values in the Embarked column using the mode.
+
+• Dropping columns that are either irrelevant or contain too many missing entries (like Cabin).
