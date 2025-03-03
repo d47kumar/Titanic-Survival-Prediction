@@ -16,7 +16,6 @@ This repository presents a predictive model built to forecast Titanic passenger 
 - [Modeling](#modeling)
   - [Logistic Regression](#logistic-regression)
 - [Generating Submission](#generating-submission)
-- [Usage Guide](#usage-guide)
 - [Accuracy](#accuracy)
 - [Further Improvements](#further-improvements)
 - [Acknowledgments](#acknowledgments)
@@ -190,29 +189,6 @@ pred = pd.DataFrame(predictions, columns=['Survived'])
 final = pd.concat([df_test['PassengerId'], pred], axis=1)
 final.to_csv("submission.csv", index=False)
 ```
-## Usage Guide
-
-### Clone the Repository:
-
-```bash
-git clone https://github.com/d47kumar/titanic-survival-prediction.git
-cd titanic-survival-prediction
-```
-### Install Dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Place the Data Files: Ensure that train.csv and test.csv are located in the project root directory.
-
-Run the Pipeline: Execute the main Python script:
-
-```bash
-python main.py
-```
-View the Submission: The predictions will be saved to submission.csv, ready for upload or further review.
-
 ## Accuracy
 The accuracy score is 76%.
 
