@@ -161,7 +161,7 @@ x = df.drop(columns=['PassengerId', 'Survived', 'Name', 'Ticket'])
 x = pd.get_dummies(x)
 y = df['Survived']
 ```
-####Model Training:
+#### Model Training:
 
 The logistic regression model with an increased maximum iteration limit is fitted on the training data:
 
