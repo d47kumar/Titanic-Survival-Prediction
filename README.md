@@ -63,3 +63,23 @@ Install them via pip:
 
 ```bash
 pip install numpy pandas seaborn matplotlib scikit-learn
+
+## Modeling
+
+### Logistic Regression
+
+After cleaning and preprocessing the data, we fit a logistic regression model to predict passenger survival.
+
+#### Data Preparation
+
+We first separate the target variable and drop unnecessary columns. Then, we apply one-hot encoding to handle categorical features:
+
+```python
+# Prepare training features and target
+y_train = pd.DataFrame(df['Survived'])
+df_x = df.drop(columns=['PassengerId', 'Survived', 'Name', 'Ticket'])
+df_test_x = df_test.drop(columns=['PassengerId', 'Name', 'Ticket'])
+
+# Convert categorical variables using one-hot encoding
+x_train = pd.get_dummies(df_x)
+x_test = pd.get_dummies(df_test_x)
