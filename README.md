@@ -189,7 +189,7 @@ final = pd.concat([df_test['PassengerId'], pred], axis=1)
 final.to_csv("submission.csv", index=False)
 ```
 ## Accuracy
-The accuracy score is 76%.
+The accuracy score is 76.794%.
 
 ## Acknowledgments
 Thanks to the contributors of the Titanic dataset.
